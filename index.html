@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyBrand</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+ <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav x-data="{ open: false }">
+  <div class="nav-inner">
+    <a href="#" class="logo">MyBrand</a>
+
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <a href="#" class="nav-cta">Get Started</a>
+
+    <button class="hamburger" @click="open = !open" :aria-expanded="open">
+      <span :style="open ? 'transform:rotate(45deg) translate(4px,4px)' : ''"></span>
+      <span :style="open ? 'opacity:0' : ''"></span>
+      <span :style="open ? 'transform:rotate(-45deg) translate(4px,-4px)' : ''"></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu" x-show="open" x-transition x-cloak>
+    <a href="#" @click="open=false">Home</a>
+    <a href="#about" @click="open=false">About</a>
+    <a href="#services" @click="open=false">Services</a>
+    <a href="#contact" @click="open=false">Contact</a>
+    <a href="#" class="mob-cta">Get Started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" x-data="{ show: false }" x-init="setTimeout(() => show = true, 80)">
+
+  <div class="grid-lines"></div>
+  <div class="corner-tl"></div>
+  <div class="corner-br"></div>
+
+<div
+  class="hero-content"
+  x-show="show"
+  x-cloak
+  x-transition:enter="transition ease-out duration-700"
+  x-transition:enter-start="opacity-0 translate-y-6"
+  x-transition:enter-end="opacity-100 translate-y-0"
+>
+    <div class="hero-badge">
+      <div class="badge-dot"></div>
+      Now Accepting New Clients
+    </div>
+
+    <h1>Build Something<br><em>Truly</em> Amazing</h1>
+
+    <p>MyBrand delivers premium products and services crafted for those who demand the best. Simple, powerful, and reliable.</p>
+
+    <div class="btn-group">
+      <a href="#" class="btn-primary">Learn More</a>
+      <a href="#" class="btn-outline">See Our Work</a>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-num">10k+</div>
+        <div class="stat-label">Customers</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">98%</div>
+        <div class="stat-label">Satisfaction</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">5yr</div>
+        <div class="stat-label">Experience</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Support</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+
+</section>
+
+
+<div x-data="{
+  selected: null,
+  posts: [
+    {
+      title: 'Web Development',
+      para: 'Modern responsive websites built with latest technologies.',
+      full: 'We create fast, scalable and SEO-friendly websites using modern frameworks like Alpine.js  , Vue and Tailwind. Perfect for startups and businesses.'
+    },
+    {
+      title: 'UI/UX Design',
+      para: 'Clean and user-focused interface design.',
+      full: 'Our design process focuses on user experience, accessibility, and modern aesthetics to ensure your product looks and feels amazing.'
+    },
+    {
+      title: 'Digital Marketing',
+      para: 'Grow your brand with smart marketing strategies.',
+      full: 'We help businesses grow using SEO, social media marketing, paid ads and content strategies tailored to your audience.'
+    }
+  ]
+}" class="card-section">
+
+  <!-- Cards -->
+  <div class="card-grid">
+    <template x-for="post in posts" :key="post.title">
+      <div class="card">
+        <h2 x-text="post.title"></h2>
+        <p x-text="post.para"></p>
+        <button @click="selected = post">Show More</button>
+      </div>
+    </template>
+  </div>
+
+  <!-- Modal Popup -->
+  <div 
+    x-show="selected"
+    x-transition
+    x-cloak
+    class="modal-overlay"
+  >
+    <div class="modal-box" @click.outside="selected = null">
+      <h2 x-text="selected.title"></h2>
+      <p x-text="selected.full"></p>
+
+      <button class="close-btn" @click="selected = null">Close</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Clock -->
+<div x-data="clock()" x-init="start()" class="clock">
+  <h1 x-text="time"></h1>
+  <p x-text="date"></p>
+</div>
+
+<!-- Footer -->
+
+<footer class="footer">
+  <div class="footer-inner">
+
+    <div class="footer-brand">
+      <h2>MyBrand</h2>
+      <p>Building modern digital experiences with simplicity and style.</p>
+    </div>
+
+    <div class="footer-links">
+      <a href="#">Home</a>
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#contact">Contact</a>
+    </div>
+
+    <div class="footer-copy">
+      <p>© 2026 MyBrand. All rights reserved.</p>
+    </div>
+
+  </div>
+</footer>
+</body>
+<script>
+function clock() {
+  return {
+    time: '',
+    date : '',
+
+    start() {
+      this.updateTime()
+      setInterval(() => {
+        this.updateTime()
+      }, 1000)
+    },
+
+    updateTime() {
+      const now = new Date()
+      this.time = now.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      })
+       this.date = now.toDateString()
+    }
+  }
+}
+</script>
+</html>
